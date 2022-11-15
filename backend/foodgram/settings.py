@@ -4,26 +4,18 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.getenv('SECRET_KEY')
-#'django-insecure-u0x8uoag!)p$m#l^&g5vimn6&9b55y3xh7w-4+5j3bsn0s93#-'
+# 'django-insecure-u0x8uoag!)p$m#l^&g5vimn6&9b55y3xh7w-4+5j3bsn0s93#-'
 DEBUG = False
 
 ALLOWED_HOSTS = ['*', '158.160.14.237']
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'users.apps.UsersConfig',
-    'recipes.apps.RecipesConfig',
-    'api.apps.ApiConfig',
-    'rest_framework',
-    'rest_framework.authtoken',
-    'djoser',
-    'django_filters',
-    'colorfield'
+    'django.contrib.admin', 'django.contrib.auth',
+    'django.contrib.contenttypes', 'django.contrib.sessions',
+    'django.contrib.messages', 'django.contrib.staticfiles',
+    'users.apps.UsersConfig', 'recipes.apps.RecipesConfig',
+    'api.apps.ApiConfig', 'rest_framework', 'rest_framework.authtoken',
+    'djoser', 'django_filters', 'colorfield'
 ]
 
 MIDDLEWARE = [
@@ -38,7 +30,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'foodgram.urls'
 
-#TEMPLATES_DIR = os.path.join(BASE_DIR, "templates")
+# TEMPLATES_DIR = os.path.join(BASE_DIR, "templates")
 
 TEMPLATES = [
     {
@@ -58,8 +50,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'foodgram.wsgi.application'
 
-
-
 DATABASES = {
     'default': {
         'ENGINE': os.getenv('DB_ENGINE'),
@@ -71,23 +61,21 @@ DATABASES = {
     }
 }
 
-
-
 AUTH_PASSWORD_VALIDATORS = [
+
     {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        'NAME':
+        'django.contrib.auth.password_validation.MinimumLengthValidator',
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        'NAME':
+        'django.contrib.auth.password_validation.CommonPasswordValidator',
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        'NAME':
+        'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-
 
 LANGUAGE_CODE = 'ru'
 
@@ -97,13 +85,11 @@ USE_I18N = True
 
 USE_TZ = True
 
-
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
 
 AUTH_USER_MODEL = 'users.User'
 
@@ -119,7 +105,6 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.AllowAny',
     ],
-
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',
     ],

@@ -2,13 +2,12 @@ from django.db.transaction import atomic
 from django.shortcuts import get_object_or_404
 from djoser.serializers import UserSerializer
 from drf_base64.fields import Base64ImageField
+from recipes.models import (Cart, Favorite, Ingredient, IngredientRecipe,
+                            Recipe, Tag)
 from rest_framework.serializers import (IntegerField, ModelSerializer,
                                         PrimaryKeyRelatedField,
                                         SerializerMethodField,
                                         SlugRelatedField, ValidationError)
-
-from recipes.models import (Cart, Favorite, Ingredient, IngredientRecipe,
-                            Recipe, Tag)
 from users.models import Follow, User
 
 

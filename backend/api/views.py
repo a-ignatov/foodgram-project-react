@@ -4,12 +4,15 @@ from django.shortcuts import get_object_or_404
 from django.template.loader import render_to_string
 from django_filters.rest_framework import DjangoFilterBackend
 from djoser.views import UserViewSet
+from recipes.models import (Cart, Favorite, Ingredient, IngredientRecipe,
+                            Recipe, Tag)
 from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.permissions import (SAFE_METHODS, IsAuthenticated,
                                         IsAuthenticatedOrReadOnly)
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
+from users.models import Follow, User
 from weasyprint import HTML
 
 from .filters import IngredientSearchFilter, RecipeFilterSet
@@ -19,9 +22,6 @@ from .serializers import (CartSerializer, CreateRecipeSerializer,
                           FavoriteSerializer, FollowListSerializer,
                           FollowSerializer, IngredientSerializer,
                           RecipeSerializer, TagSerializer)
-from recipes.models import (Cart, Favorite, Ingredient, IngredientRecipe,
-                            Recipe, Tag)
-from users.models import Follow, User
 
 
 class UsersViewSet(UserViewSet):
