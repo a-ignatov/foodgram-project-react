@@ -1,16 +1,13 @@
 import os
-from datetime import timedelta
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'django-insecure-u0x8uoag!)p$m#l^&g5vimn6&9b55y3xh7w-4+5j3bsn0s93#-'
+SECRET_KEY = os.getenv('SECRET_KEY')
+#'django-insecure-u0x8uoag!)p$m#l^&g5vimn6&9b55y3xh7w-4+5j3bsn0s93#-'
+DEBUG = False
 
-DEBUG = True
-
-ALLOWED_HOSTS = ['*', 'localhost']
-
-
+ALLOWED_HOSTS = ['*', '158.160.14.237']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -65,8 +62,12 @@ WSGI_APPLICATION = 'foodgram.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': os.getenv('DB_ENGINE'),
+        'NAME': os.getenv('DB_NAME'),
+        'USER': os.getenv('POSTGRES_USER'),
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
+        'HOST': os.getenv('DB_HOST'),
+        'PORT': os.getenv('DB_PORT')
     }
 }
 
