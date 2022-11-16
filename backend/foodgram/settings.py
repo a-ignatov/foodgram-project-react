@@ -13,19 +13,19 @@ DEBUG = False
 ALLOWED_HOSTS = ['*', '158.160.14.237']
 
 INSTALLED_APPS = [
-    'django.contrib.admin', 
+    'django.contrib.admin',
     'django.contrib.auth',
-    'django.contrib.contenttypes', 
+    'django.contrib.contenttypes',
     'django.contrib.sessions',
-    'django.contrib.messages', 
+    'django.contrib.messages',
     'django.contrib.staticfiles',
-    'users.apps.UsersConfig', 
+    'users.apps.UsersConfig',
     'recipes.apps.RecipesConfig',
-    'api.apps.ApiConfig', 
-    'rest_framework', 
+    'api.apps.ApiConfig',
+    'rest_framework',
     'rest_framework.authtoken',
-    'djoser', 
-    'django_filters', 
+    'djoser',
+    'django_filters',
     'colorfield'
 ]
 
