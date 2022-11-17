@@ -62,7 +62,6 @@ jobs:
           
 
   deploy:
-    uses: actions/checkout@v2
     if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     needs: build_and_push_to_docker_hub
