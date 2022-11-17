@@ -6,24 +6,25 @@ services:
     volumes:
       - db_value:/var/lib/postgresql/data/
     env_file:
-      - ../backend/foodgram/.env
+      - ./.env
 
   backend:
     image: aignatov2/backend:latest
+    restart: always
     volumes:
       - static_value:/app/static/
       - media_value:/app/media/ 
     depends_on:
       - db
     env_file:
-      - ../backend/foodgram/.env
+      - ./.env
 
   frontend:
     image: aignatov2/frontend:latest
     volumes:
       - ../frontend/:/app/result_build/
     depends_on:
-      - db
+      - backend
 
   nginx:
     image: nginx:1.19.3
