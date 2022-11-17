@@ -8,7 +8,7 @@ services:
     env_file:
       - ../backend/foodgram/.env
 
-  backend:
+  foodgram-backend:
     image: aignatov2/foodgram-backend:latest
     volumes:
       - static_value:/app/static/
@@ -18,7 +18,7 @@ services:
     env_file:
       - ../backend/foodgram/.env
 
-  frontend:
+  foodgram-frontend:
     image: aignatov2/foodgram-frontend:latest
     volumes:
       - ../frontend/:/app/result_build/
