@@ -8,8 +8,8 @@ services:
     env_file:
       - ../backend/foodgram/.env
 
-  foodgram-backend:
-    image: aignatov2/foodgram-backend:latest
+  backend:
+    image: aignatov2/backend:latest
     volumes:
       - static_value:/app/static/
       - media_value:/app/media/ 
@@ -18,8 +18,8 @@ services:
     env_file:
       - ../backend/foodgram/.env
 
-  foodgram-frontend:
-    image: aignatov2/foodgram-frontend:latest
+  frontend:
+    image: aignatov2/frontend:latest
     volumes:
       - ../frontend/:/app/result_build/
     depends_on:
