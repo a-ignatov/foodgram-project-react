@@ -1,32 +1,38 @@
-name: Foodgram workflow
+---
+name: CI for Foodgram
 
-on: [push]
+on:
+  push:
+    branches: [ master ]
 
 jobs:
-  tests: 
-    runs-on: ubuntu-latest
+
+  tests:
+    runs-on: ubuntu-20.04
     steps:
     - uses: actions/checkout@v2
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
-        python-version: 3.7
+        python-version: '3.10'
+        architecture: 'x64'
 
     - name: Install dependencies
-      run: | 
-        python -m pip install --upgrade pip 
-        pip install flake8 pep8-naming flake8-broken-line flake8-return
-        pip install -r backend/requirements.txt 
+      run: |
+        python -m pip install --upgrade pip
+        pip install flake8 flake8-builtins flake8-import-order pep8-naming flake8-broken-line flake8-quotes
+        pip install -r backend/requirements.txt
+
 
     - name: Test with flake8
       run: |
-        python -m flake8 
+        python -m flake8 backend/
 
-  build_and_push_to_docker_hub:
+ build_and_push_to_docker_hub:
+    if: github.ref == 'refs/heads/master'
     name: Push Docker image to Docker Hub
     runs-on: ubuntu-latest
     needs: tests
-    if: github.ref == 'refs/heads/master'
     steps:
       - name: Check out the repo
         uses: actions/checkout@v2
@@ -40,49 +46,44 @@ jobs:
       - name: Push to Docker Hub
         uses: docker/build-push-action@v2
         with:
+          context: ./backend
           push: true
-          context: ./backend/
-          tags: ${{ secrets.DOCKER_USERNAME }}/foodgram_back:latest
-
+          tags: aignatov2/foodgram:latest
+  
   deploy:
+    if: github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
     needs: build_and_push_to_docker_hub
     steps:
-    - name: executing remote ssh commands to deploy
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.HOST }}
-        username: ${{ secrets.USER }}
-        key: ${{ secrets.SSH_KEY }}
-        passphrase: ${{ secrets.PASSPHRASE }}
-        script: |
-          sudo docker pull ${{ secrets.DOCKER_USERNAME }}/foodgram_back:latest
-          sudo docker-compose stop
-          sudo docker-compose rm backend
-          sudo fuser -k 80/tcp
-          sudo rm .env
-          touch .env
-          echo SECRET_KEY=${{ secrets.SECRET_KEY }} >> .env
-          echo DB_ENGINE=${{ secrets.DB_ENGINE }} >> .env
-          echo DB_NAME=${{ secrets.DB_NAME }} >> .env
-          echo POSTGRES_USER=${{ secrets.POSTGRES_USER }} >> .env
-          echo POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} >> .env
-          echo DB_HOST=${{ secrets.DB_HOST }} >> .env
-          echo DB_PORT=${{ secrets.DB_PORT }} >> .env
-          sudo docker-compose up -d
-
-  send_message_master:
+      - name: executing remote ssh commands to deploy
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USER }}
+          key: ${{ secrets.SSH_KEY }}
+          passphrase: ${{ secrets.PASSPHRASE }}
+          script: |
+            sudo docker pull aignatov2/foodgram:latest
+            sudo docker-compose stop
+            sudo docker-compose rm backend
+            touch .env 
+            echo SECRET_KEY=${{ secrets.SECRET_KEY }} > .env
+            echo DB_ENGINE=${{ secrets.DB_ENGINE }} >> .env
+            echo DB_NAME=${{ secrets.DB_NAME }} >> .env
+            echo POSTGRES_USER=${{ secrets.POSTGRES_USER }} >> .env
+            echo POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} >> .env
+            echo DB_HOST=${{ secrets.DB_HOST }} >> .env
+            echo DB_PORT=${{ secrets.DB_PORT }} >> .env
+            sudo docker-compose up -d 
+  
+  send_message:
+    if: github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
     needs: deploy
     steps:
-    - name: send message if master deploy
+    - name: send message
       uses: appleboy/telegram-action@master
       with:
         to: ${{ secrets.TELEGRAM_TO }}
         token: ${{ secrets.TELEGRAM_TOKEN }}
-        message: |
-          ${{ github.workflow }} успешно выполнен!
-          ${{ github.actor }} created commit:
-            Commit message: ${{ github.event.commits[0].message }}
-            Project deployed!!!
-            Repository: ${{ github.repository }}
+        message: ${{ github.workflow }} успешно выполнен! 

@@ -1,13 +1,4 @@
-version: '3.3'
-
-volumes:
-  static_value:
-  media_value:
-  result_build:
-  postgres_data:
-  redoc:
-
-
+version: '3.8'
 services:
 
   db:
@@ -16,23 +7,22 @@ services:
       - postgres_data:/var/lib/postgresql/data/
     env_file:
       - ./.env
-
+  
   backend:
-    image: aignatov2/foodgram_back:latest
+    image: aignatov2/foodgram:latest
     restart: always
     volumes:
-      - static_value:/app/static/
-      - media_value:/app/media/
-      - redoc:/app/api/docs/
+      - static_value:/code/static/
+      - media_value:/code/media/
     depends_on:
       - db
     env_file:
       - ./.env
 
   frontend:
-    image: aignatov2/foodgram_front:latest
+    image: aignatov2/foodgram_frontend:v1
     volumes:
-      - result_build:/app/result_build/build/
+      - ../frontend/:/app/result_build/
 
   nginx:
     image: nginx:1.19.3
@@ -40,13 +30,17 @@ services:
       - 80:80
     volumes:
       - ./nginx.conf:/etc/nginx/conf.d/default.conf
-      - static_value:/static/
-      - media_value:/media/
-      - result_build:/usr/share/nginx/html/
-      - redoc:/usr/share/nginx/html/api/docs/
+      - ../frontend/build:/usr/share/nginx/html/
+      - ../docs/redoc.html:/usr/share/nginx/html/api/docs/redoc.html
+      - ../docs/openapi-schema.yml:/usr/share/nginx/html/api/docs/openapi-schema.yml
+      - static_value:/var/html/static/
+      - media_value:/var/html/media/
+    restart: always
     depends_on:
       - backend
       - frontend
-    env_file:
-      - ./.env
 
+volumes:
+  postgres_data:
+  static_value:
+  media_value:
