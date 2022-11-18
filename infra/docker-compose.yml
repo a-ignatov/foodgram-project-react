@@ -8,9 +8,9 @@ services:
       - db_value:/var/lib/postgresql/data/
     env_file:
       - ./.env
+
   backend:
     image: aignatov2/foodgram-backend:latest
-    restart: always
     volumes:
       - static_value:/app/static/
       - media_value:/app/media/ 
