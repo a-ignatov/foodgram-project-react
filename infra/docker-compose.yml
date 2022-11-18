@@ -17,7 +17,7 @@ services:
     depends_on:
       - db
     env_file:
-      - ../backend/foodgram/.env
+      - ./.env
 
   frontend:
     image: aignatov2/foodgram-frontend:latest
