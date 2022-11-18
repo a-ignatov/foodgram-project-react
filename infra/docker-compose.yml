@@ -1,3 +1,4 @@
+
 version: '3.8'
 services:
 
@@ -6,8 +7,7 @@ services:
     volumes:
       - db_value:/var/lib/postgresql/data/
     env_file:
-      - ../backend/foodgram/.env
-
+      - ./.env
   backend:
     image: aignatov2/foodgram-backend:latest
     restart: always
