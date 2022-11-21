@@ -1,7 +1,10 @@
 from rest_framework import mixins, viewsets
 
 
-class CustomViewSetMixins(mixins.CreateModelMixin, mixins.ListModelMixin,
-                          mixins.DestroyModelMixin, viewsets.GenericViewSet):
-
-    pass
+class ViewOnlyViewSet(
+    mixins.ListModelMixin,
+    mixins.RetrieveModelMixin,
+    viewsets.GenericViewSet
+):
+    """Viewset to handle GET requests only."""
+    pagination_class = None
