@@ -3,16 +3,16 @@ from datetime import timedelta
 
 from dotenv import load_dotenv
 
-
 load_dotenv()
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-SECRET_KEY = os.getenv('SECRET_KEY', default='key')
+SECRET_KEY = os.getenv('SECRET_KEY')
+# 'django-insecure-u0x8uoag!)p$m#l^&g5vimn6&9b55y3xh7w-4+5j3bsn0s93#-'
 
-DEBUG = os.getenv('DEBUG', default=False)
+DEBUG = False
 
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '').split(',')
+ALLOWED_HOSTS = ['*', '158.160.14.237']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -72,18 +72,23 @@ DATABASES = {
 }
 
 AUTH_PASSWORD_VALIDATORS = [
-    {'NAME': 'django.contrib.auth.password_validation.%s' % validator}
-    for validator in [
-        'UserAttributeSimilarityValidator',
-        'MinimumLengthValidator',
-        'CommonPasswordValidator',
-        'NumericPasswordValidator',
-    ]
+    {
+        'NAME':
+        'django.contrib.auth.password_validation.MinimumLengthValidator',
+    },
+    {
+        'NAME':
+        'django.contrib.auth.password_validation.CommonPasswordValidator',
+    },
+    {
+        'NAME':
+        'django.contrib.auth.password_validation.NumericPasswordValidator',
+    },
 ]
 
-LANGUAGE_CODE = 'ru-ru'
+LANGUAGE_CODE = 'ru'
 
-TIME_ZONE = os.getenv('TIME_ZONE')
+TIME_ZONE = 'UTC'
 
 USE_I18N = True
 
