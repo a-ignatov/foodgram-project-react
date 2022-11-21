@@ -146,3 +146,5 @@ DJOSER = {
 }
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+SITE_NAME = 'foodgram.com'
