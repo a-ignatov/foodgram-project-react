@@ -13,11 +13,11 @@ from foodgram.settings import MEDIA_ROOT
 
 def pdf_generate(text, response):
     reportlab.rl_config.TTFSearchPath.append(str(MEDIA_ROOT) + '/fonts')
-    pdfmetrics.registerFont(TTFont('Arial', 'arial.ttf'))
+    pdfmetrics.registerFont(TTFont('Open Sans', 'opensans.ttf'))
     styles = getSampleStyleSheet()
     styles.add(
         ParagraphStyle(name='Top Recipe',
-                       fontName='Arial',
+                       fontName='Open Sans',
                        fontSize=14,
                        leading=16,
                        backColor=colors.whitesmoke,
@@ -25,13 +25,13 @@ def pdf_generate(text, response):
                        alignment=TA_CENTER))
     styles.add(
         ParagraphStyle(name='Ingredient',
-                       fontName='Arial',
+                       fontName='Open Sans',
                        fontSize=10,
                        textColor=colors.black,
                        alignment=TA_LEFT))
     styles.add(
         ParagraphStyle(name='Info',
-                       fontName='Arial',
+                       fontName='Open Sans',
                        fontSize=10,
                        textColor=colors.red,
                        alignment=TA_LEFT))
