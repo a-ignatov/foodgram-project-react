@@ -13,7 +13,7 @@ router.register('tags', TagsViewSet)
 router.register('ingredients', IngredientsViewSet)
 
 urlpatterns = [
+    path('docs/', TemplateView.as_view(template_name='docs/redoc.html')),
     path('', include(router.urls)),
     path('', include('users.urls')),
-    path('docs/', TemplateView.as_view(template_name='docs/redoc.html')),
 ]
