@@ -38,14 +38,18 @@ def pdf_generate(text, response):
 
     pdf = SimpleDocTemplate(
         response,
-        title=f'{"Ingredients-to-buy:"}',
+        title=f'To-buy list',
         pagesize=A4,
         rightMargin=2 * cm,
         leftMargin=2 * cm,
         topMargin=2 * cm,
-        bottomMargin=2 * cm)
+        bottomMargin=2 * cm
+    )
     pdf_generate = []
     text_title = 'Ingredients:'
+    text_info = f'The purchase list'
+    pdf_generate.append(Paragraph(text_info, styles['Ingredient']))
+    pdf_generate.append(Spacer(1, 1))
     pdf_generate.append(Paragraph(text_title, styles['Top Recipe']))
     pdf_generate.append(Spacer(1, 24))
     pdf_generate.append(Paragraph(text, styles['Ingredient']))
