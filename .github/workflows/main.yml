@@ -92,8 +92,7 @@ jobs:
         passphrase: ${{ secrets.PASSPHRASE }}
 
         script: |
-          sudo docker-compose stop
-          sudo docker-compose rm backend
+          sudo docker system prune
           sudo docker pull ${{ secrets.DOCKER_USERNAME }}/foodgram_backend:latest
           sudo docker pull ${{ secrets.DOCKER_USERNAME }}/foodgram_frontend:latest
           rm .env
@@ -105,13 +104,14 @@ jobs:
           echo POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} >> .env
           echo DB_HOST=${{ secrets.DB_HOST }} >> .env
           echo DB_PORT=${{ secrets.DB_PORT }} >> .env
+          sudo docker-compose up -d
+          
           sudo docker-compose exec backend python manage.py makemigrations recipes
           sudo docker-compose exec backend python manage.py makemigrations users
           sudo docker-compose exec backend python manage.py makemigrations api
           sudo docker-compose exec backend python manage.py migrate
           sudo docker-compose exec backend python manage.py import_to_db
           sudo docker-compose exec backend python manage.py collectstatic --no-input
-          sudo docker-compose up -d
 
   send_message_telegram:
     runs-on: ubuntu-latest
