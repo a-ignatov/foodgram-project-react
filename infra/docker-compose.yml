@@ -1,8 +1,8 @@
-version: '3.3'
+version: '3.8'
 
 services:
   db:
-    image: postgres:13.0-alpine
+    image: postgres:15-alpine
     volumes:
       - db_data:/var/lib/postgresql/data/
     env_file:
@@ -24,7 +24,7 @@ services:
       - ../frontend/:/app/result_build/
 
   nginx:
-    image: nginx:1.21.3-alpine
+    image: nginx:1.22-alpine
     restart: always
     ports:
       - "80:80"
