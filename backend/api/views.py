@@ -9,13 +9,14 @@ from django.db.models import Sum
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
-from recipes.models import (Cart, Favorite, Ingredient, IngredientInRecipe,
-                            Recipes, Tag)
 from rest_framework import permissions, status, viewsets
 from rest_framework.decorators import action
 from rest_framework.filters import SearchFilter
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
+
+from recipes.models import (Cart, Favorite, Ingredient, IngredientInRecipe,
+                            Recipes, Tag)
 
 
 class IngredientFilter(SearchFilter):
@@ -23,30 +24,24 @@ class IngredientFilter(SearchFilter):
 
 
 class TagsViewSet(ViewOnlyViewSet):
-    """Tag model processing viewset."""
-
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly, )
     queryset = Tag.objects.all()
     serializer_class = TagsSerializer
 
 
 class IngredientsViewSet(ViewOnlyViewSet):
-    """Ingredient model processing viewset."""
-
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly, )
     queryset = Ingredient.objects.all()
     serializer_class = IngredientsSerializer
-    filter_backends = (IngredientFilter,)
-    search_fields = ('^name',)
+    filter_backends = (IngredientFilter, )
+    search_fields = ('^name', )
 
 
 class RecipesViewSet(viewsets.ModelViewSet):
-    """Recipes model processing viewset."""
-
     queryset = Recipes.objects.all()
     pagination_class = PageNumberPagination
-    permission_classes = (IsAuthorOrAdminOrReadOnly,)
-    filter_backends = (DjangoFilterBackend,)
+    permission_classes = (IsAuthorOrAdminOrReadOnly, )
+    filter_backends = (DjangoFilterBackend, )
     filterset_class = RecipesFilter
 
     def get_serializer_class(self):
@@ -64,13 +59,9 @@ class RecipesViewSet(viewsets.ModelViewSet):
         user = request.user
         recipe = get_object_or_404(Recipes, id=pk)
 
-        cart = Cart.objects.filter(
-            author=user,
-            recipe=recipe
-        )
+        cart = Cart.objects.filter(author=user, recipe=recipe)
 
         if request.method == 'POST':
-
             if cart.exists():
                 error = {
                     'errors': ('You cannot add a prescription to the '
@@ -78,18 +69,12 @@ class RecipesViewSet(viewsets.ModelViewSet):
                 }
                 return Response(error, status=status.HTTP_400_BAD_REQUEST)
 
-            Cart(
-                author=user,
-                recipe=recipe
-            ).save()
+            Cart(author=user, recipe=recipe).save()
             serializer = ActionsSerializer(recipe)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
         if not cart.exists():
-            error = {
-                'errors':
-                    'This recipe is not on your shopping list.'
-            }
+            error = {'errors': 'This recipe is not on your shopping list.'}
             return Response(error, status=status.HTTP_400_BAD_REQUEST)
 
         cart.delete()
@@ -105,10 +90,7 @@ class RecipesViewSet(viewsets.ModelViewSet):
         user = request.user
         recipe = get_object_or_404(Recipes, id=pk)
 
-        favorite = Favorite.objects.filter(
-            author=user,
-            recipe=recipe
-        )
+        favorite = Favorite.objects.filter(author=user, recipe=recipe)
 
         if request.method == 'POST':
 
@@ -118,10 +100,7 @@ class RecipesViewSet(viewsets.ModelViewSet):
                 }
                 return Response(error, status=status.HTTP_400_BAD_REQUEST)
 
-            Favorite(
-                author=user,
-                recipe=recipe
-            ).save()
+            Favorite(author=user, recipe=recipe).save()
             serializer = ActionsSerializer(recipe)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
@@ -134,25 +113,21 @@ class RecipesViewSet(viewsets.ModelViewSet):
 
     @action(
         detail=False,
-        methods=['GET', ],
+        methods=[
+            'GET',
+        ],
         permission_classes=[permissions.IsAuthenticatedOrReadOnly],
     )
     def download_shopping_cart(self, request):
         get_cart = IngredientInRecipe.objects.filter(
-            recipe__cart__author=request.user
-        ).values(
-            'ingredient__name',
-            'ingredient__measurement_unit'
-        ).annotate(
-            Sum('amount')
-        )
+            recipe__cart__author=request.user).values(
+                'ingredient__name',
+                'ingredient__measurement_unit').annotate(Sum('amount'))
         response = HttpResponse(content_type='application/pdf')
         response['Content-Disposition'] = 'attachment;'
         text_cart = ''
         for value in get_cart:
-            text_cart += (
-                value['ingredient__name'] + ' - '
-                + str(value['amount__sum']) + ' '
-                + value['ingredient__measurement_unit'] + '<br />'
-            )
+            text_cart += (value['ingredient__name'] + ' - ' +
+                          str(value['amount__sum']) + ' ' +
+                          value['ingredient__measurement_unit'] + '<br />')
         return pdf_generate(text_cart, response)
