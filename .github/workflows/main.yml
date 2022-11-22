@@ -107,14 +107,6 @@ jobs:
           echo DB_PORT=${{ secrets.DB_PORT }} >> .env
           sudo docker-compose up -d
 
-          sudo docker-compose exec -T backend ./manage.py makemigrations recipes
-          sudo docker-compose exec -T backend ./manage.py makemigrations users
-          sudo docker-compose exec -T backend ./manage.py makemigrations api
-          sudo docker-compose exec -T backend ./manage.py migrate --noinput
-          sudo docker-compose exec -T backend ./manage.py collectstatic --no-input
-          sudo docker-compose exec -T backend ./manage.py import_to_db
-
-
   send_message_telegram:
     runs-on: ubuntu-latest
     needs: deploy
