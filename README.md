@@ -17,4 +17,90 @@
 
 Зарегистрированные пользователи могут подписываться на авторов рецептов или добавлять рецепты в корзину, в избранное.
 Есть возможность фильтрации рецептов по тегам, поиск по началу названия ингредиента при добавлении или редактировании рецепта.
-![recipe-detail](https://user-images.githubusercontent.com/74264747/130495561-d3193e9d-c759-4b00-8562-0f2ef4e37ce3.jpg)
+![recipe](https://github.com/a-ignatov/foodgram-project-react/blob/868dff2bd8ed2ef3ccdd3a9bdb994d44ab3c5e0d/backend/media/data/Screenshot%202022-11-22%20at%2018.41.58.png)
+
+## Запуск сайта локально
+- Склонировать проект и перейти в папку проекта
+
+```bash
+git clone git@github.com:a-ignatov/foodgram-project-react.git
+cd foodgram-project-react
+```
+- Установить и активировать виртуальное окружение
+
+```bash
+python3 -m venv venv
+source venv/bin/activate 
+```
+
+- Установить зависимости из файла **requirements.txt**
+ 
+```bash
+cd backend
+pip install -r requirements.txt
+``` 
+- В папке с файлом manage.py выполнить команды:
+
+```bash
+python manage.py makemigrations
+python manage.py migrate
+```
+- Создать пользователя с неограниченными правами:
+
+```bash
+python manage.py createsuperuser
+```
+- Запустить web-сервер на локальной машине:
+
+```bash
+python3 manage.py runserver
+```
+
+## Docker инструкции
+- Установить Docker и получить образ
+
+```bash
+docker pull aignatov2/foodgram_backend:latest
+docker pull aignatov2/foodgram_frontend:latest
+```
+
+Проект можно развернуть используя контейнеризацию Docker  
+Параметры запуска описаны в `docker-compose.yml`.
+
+При запуске создаются 3 контейнера:
+
+ - контейнер базы данных **db**
+ - контейнер приложения **backend**
+ - контейнер web-сервера **nginx**
+
+Для развертывания контейнеров необходимо:
+
+- Создать и сохранить переменные окружения в **.env** файл, образец ниже
+```bash
+DB_ENGINE=django.db.backends.postgresql
+DB_NAME=db
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=postgres
+DB_HOST=db
+DB_PORT=5432
+```
+
+- Запустить docker-compose
+
+```bash
+docker-compose up
+```
+- Выполнить миграции и подключить статику
+
+```bash
+docker-compose exec backend python manage.py makemigrations
+docker-compose exec backend python manage.py migrate
+docker-compose exec backend python manage.py collectstatic --noinput
+```
+- Создать superuser
+
+```bash
+docker-compose exec backend python manage.py createsuperuser
+```
+
+- Зайти в админ-панель Django под суперюзером и создать несколько объектов класса Tag. 
