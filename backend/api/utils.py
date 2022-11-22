@@ -13,7 +13,7 @@ from foodgram.settings import MEDIA_ROOT
 
 def pdf_generate(text, response):
     reportlab.rl_config.TTFSearchPath.append(str(MEDIA_ROOT) + '/fonts')
-    pdfmetrics.registerFont(TTFont('Open Sans', 'opensans.ttf'))
+    pdfmetrics.registerFont(TTFont('Arial', 'arial.ttf'))
     styles = getSampleStyleSheet()
     styles.add(
         ParagraphStyle(name='Top Recipe',

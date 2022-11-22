@@ -7,20 +7,19 @@ class User(AbstractUser):
     ADMIN = 'admin'
 
     USER_ROLE = (
-        (USER, 'User role'),
-        (ADMIN, 'Administrator role'),
+        (USER, 'User'),
+        (ADMIN, 'Administrator'),
     )
 
-    email = models.EmailField(
-        'Email',
-        unique=True,
-        error_messages={
-            'unique': ('This email is already registered'),
-        }
-    )
+    email = models.EmailField('Email',
+                              unique=True,
+                              error_messages={
+                                  'unique':
+                                  ('The email is already registered'),
+                              })
 
     first_name = models.TextField(
-        'Name',
+        'First Name',
         max_length=150,
         blank=True,
     )
@@ -36,12 +35,10 @@ class User(AbstractUser):
         blank=True,
     )
 
-    role = models.CharField(
-        'User role',
-        max_length=15,
-        choices=USER_ROLE,
-        default=USER
-    )
+    role = models.CharField('User role',
+                            max_length=15,
+                            choices=USER_ROLE,
+                            default=USER)
 
     @property
     def is_admin(self):
@@ -52,8 +49,6 @@ class User(AbstractUser):
 
 
 class Subscription(models.Model):
-    """User subscription model."""
-
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
@@ -66,7 +61,5 @@ class Subscription(models.Model):
     )
 
     class Meta:
-        models.UniqueConstraint(
-            fields=('user', 'following'),
-            name='unique_subscription_user'
-        )
+        models.UniqueConstraint(fields=('user', 'following'),
+                                name='unique_subscription_user')
