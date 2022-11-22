@@ -64,7 +64,7 @@ class RecipesViewSet(viewsets.ModelViewSet):
         if request.method == 'POST':
             if cart.exists():
                 error = {
-                    'errors': ('You cannot add a prescription to the '
+                    'errors': ('You cannot add a recipe to the '
                                'shopping list again.')
                 }
                 return Response(error, status=status.HTTP_400_BAD_REQUEST)
@@ -96,7 +96,7 @@ class RecipesViewSet(viewsets.ModelViewSet):
 
             if favorite.exists():
                 error = {
-                    'errors': 'You can not add a recipe to favorites again.'
+                    'errors': 'The recipe is in favourites already.'
                 }
                 return Response(error, status=status.HTTP_400_BAD_REQUEST)
 

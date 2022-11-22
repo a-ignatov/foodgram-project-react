@@ -8,7 +8,8 @@ from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.platypus import Paragraph, SimpleDocTemplate, Spacer
 
-from foodgram.settings import MEDIA_ROOT, SITE_NAME
+from foodgram.settings import MEDIA_ROOT
+
 
 def pdf_generate(text, response):
     reportlab.rl_config.TTFSearchPath.append(str(MEDIA_ROOT) + '/fonts')
@@ -37,7 +38,7 @@ def pdf_generate(text, response):
 
     pdf = SimpleDocTemplate(
         response,
-        title=f'Ingredients-to-buy:',
+        title=f'{"Ingredients-to-buy:"}',
         pagesize=A4,
         rightMargin=2 * cm,
         leftMargin=2 * cm,
