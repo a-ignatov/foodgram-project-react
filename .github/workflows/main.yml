@@ -92,7 +92,8 @@ jobs:
         passphrase: ${{ secrets.PASSPHRASE }}
 
         script: |
-          sudo docker system prune
+          sudo docker-compose stop
+          sudo docker-compose rm backend
           sudo docker pull ${{ secrets.DOCKER_USERNAME }}/foodgram_backend:latest
           sudo docker pull ${{ secrets.DOCKER_USERNAME }}/foodgram_frontend:latest
           rm .env
@@ -112,6 +113,7 @@ jobs:
           sudo docker-compose exec backend python manage.py migrate
           sudo docker-compose exec backend python manage.py import_to_db
           sudo docker-compose exec backend python manage.py collectstatic --no-input
+          
 
   send_message_telegram:
     runs-on: ubuntu-latest
