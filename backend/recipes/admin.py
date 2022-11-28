@@ -4,7 +4,7 @@ from .models import Ingredient, Recipes, Tag
 
 
 class RecipesAdmin(admin.ModelAdmin):
-    list_display = ('pk', 'name', 'author', 'display_tag', 'pub_date',
+    list_display = ('pk', 'name', 'author', 'pub_date',
                     'is_favorite')
     list_editable = ('name', 'author')
     list_display_links = ('pk', )
