@@ -151,12 +151,11 @@ class Favorite(models.Model):
         on_delete=models.CASCADE,
     )
     recipe = models.ForeignKey(Recipes,
-                               related_name='in_favorite',
+                               related_name='favorite',
                                verbose_name='Recipe',
                                on_delete=models.CASCADE)
 
     class Meta:
-        default_related_name = 'favorites'
         constraints = (models.UniqueConstraint(
             fields=('author', 'recipe'),
             name='unique_favorite',
@@ -170,9 +169,9 @@ class Cart(models.Model):
     author = models.ForeignKey(User,
                                verbose_name='Subscribed',
                                on_delete=models.CASCADE,
-                               related_name='cart')
+                               related_name='carts')
     recipe = models.ForeignKey(Recipes,
-                               related_name='cart',
+                               related_name='carts',
                                verbose_name='Recipe',
                                on_delete=models.CASCADE)
 
