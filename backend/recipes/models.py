@@ -112,14 +112,9 @@ class Recipes(models.Model):
         ordering = ('-pub_date', )
         verbose_name = 'Recipe'
         verbose_name_plural = 'Recipes'
-        constraints = (models.UniqueConstraint(
-            fields=('author', 'name'),
-            name='unique_recipes',
-        ), )
 
-    def display_tag(self):
-        return ', '.join(tags.name for tags in self.tags.all()[:3])
-    display_tag.short_description = 'Tag'
+
+
 
 
 class IngredientInRecipe(models.Model):
