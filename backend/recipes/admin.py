@@ -13,7 +13,7 @@ class RecipesAdmin(admin.ModelAdmin):
     fields = ('name', 'text', 'tags', 'author')
 
     def is_favorite(self, obj):
-        return obj.favorite.count()
+        return obj.favorites.count()
 
     is_favorite.short_description = 'In favorites'
 

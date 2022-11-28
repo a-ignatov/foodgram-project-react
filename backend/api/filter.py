@@ -15,7 +15,7 @@ class RecipesFilter(FilterSet):
 
     def favorited_filter(self, queryset, name, value):
         if value:
-            return queryset.filter(favorite__author=self.request.user)
+            return queryset.filter(favorites__author=self.request.user)
         return queryset
 
     def cart_filter(self, queryset, name, value):
