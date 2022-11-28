@@ -1,14 +1,19 @@
 from api.serializers import RecipeSmallSerializer
 from rest_framework import serializers
+from rest_framework.validators import UniqueValidator
 
 from users.models import Subscription, User
+from foodgram.settings import MAX_USERNAME_LENGTH, BANNED_USERNAMES
 
 
 class UserShowSerializer(serializers.ModelSerializer):
     email = serializers.EmailField(required=True)
-    username = serializers.CharField(max_length=150, required=True)
-    first_name = serializers.CharField(max_length=150, required=True)
-    last_name = serializers.CharField(max_length=150, required=True)
+    username = serializers.CharField(max_length=MAX_USERNAME_LENGTH,
+                                     required=True)
+    first_name = serializers.CharField(max_length=MAX_USERNAME_LENGTH,
+                                       required=True)
+    last_name = serializers.CharField(max_length=MAX_USERNAME_LENGTH,
+                                      required=True)
     is_subscribed = serializers.SerializerMethodField(read_only=True)
 
     def get_is_subscribed(self, username):
@@ -29,10 +34,25 @@ class UserShowSerializer(serializers.ModelSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
-    email = serializers.EmailField(required=True)
-    username = serializers.CharField(max_length=150, required=True)
-    first_name = serializers.CharField(max_length=150, required=True)
-    last_name = serializers.CharField(max_length=150, required=True)
+    email = serializers.EmailField(
+        required=True,
+        validators=[
+            UniqueValidator(
+                queryset=User.objects.all(),
+                message="A user with this email is already registered.")
+        ])
+    username = serializers.CharField(
+        max_length=MAX_USERNAME_LENGTH,
+        required=True,
+        validators=[
+            UniqueValidator(
+                queryset=User.objects.all(),
+                message="A user with this username is already registered.")
+        ])
+    first_name = serializers.CharField(max_length=MAX_USERNAME_LENGTH,
+                                       required=True)
+    last_name = serializers.CharField(max_length=MAX_USERNAME_LENGTH,
+                                      required=True)
     password = serializers.CharField(min_length=4,
                                      write_only=True,
                                      required=True,
@@ -45,20 +65,6 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = ('email', 'username', 'first_name', 'last_name', 'password',
                   'role')
-
-    def validate_email(self, data):
-        if User.objects.filter(email=data).exists():
-            raise serializers.ValidationError(
-                "A user with this email is already registered.")
-
-        return data
-
-    def validate_username(self, data):
-        if User.objects.filter(username=data).exists():
-            raise serializers.ValidationError(
-                "A user with this name already exists.")
-
-        return data
 
     def create(self, validated_data):
         user = super().create(validated_data)
@@ -77,10 +83,9 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class SignupSerializer(serializers.ModelSerializer):
-    username = serializers.CharField(max_length=150)
+    username = serializers.CharField(max_length=MAX_USERNAME_LENGTH)
     email = serializers.EmailField(max_length=254)
-    banned_names = ('me', 'admin', 'ADMIN', 'administrator', 'Administrator',
-                    'moderator')
+    banned_names = BANNED_USERNAMES
 
     class Meta:
         model = User
@@ -107,7 +112,7 @@ class SignupSerializer(serializers.ModelSerializer):
 
 
 class TokenSerializer(serializers.Serializer):
-    username = serializers.CharField(max_length=150)
+    username = serializers.CharField(max_length=MAX_USERNAME_LENGTH)
     confirmation_code = serializers.CharField(max_length=24)
 
 

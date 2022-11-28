@@ -147,3 +147,8 @@ DJOSER = {
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 SITE_NAME = 'foodgram.com'
+
+MAX_USERNAME_LENGTH = 150
+
+BANNED_USERNAMES = ('me', 'admin', 'ADMIN', 'administrator', 'Administrator',
+                    'moderator')
