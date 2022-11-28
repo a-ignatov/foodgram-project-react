@@ -169,9 +169,9 @@ class Cart(models.Model):
     author = models.ForeignKey(User,
                                verbose_name='Subscribed',
                                on_delete=models.CASCADE,
-                               related_name='cart')
+                               related_name='carts')
     recipe = models.ForeignKey(Recipes,
-                               related_name='cart',
+                               related_name='carts',
                                verbose_name='Recipe',
                                on_delete=models.CASCADE)
 
