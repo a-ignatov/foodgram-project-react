@@ -111,6 +111,14 @@ class Recipes(models.Model):
         ordering = ('-pub_date', )
         verbose_name = 'Recipe'
         verbose_name_plural = 'Recipes'
+        constraints = (models.UniqueConstraint(
+            fields=('author', 'name'),
+            name='unique_recipes',
+        ), )
+
+    def display_tag(self):
+        return ', '.join(tags.name for tags in self.tags.all()[:3])
+    display_tag.short_description = 'Tag'
 
 
 class IngredientInRecipe(models.Model):
@@ -168,9 +176,9 @@ class Cart(models.Model):
     author = models.ForeignKey(User,
                                verbose_name='Subscribed',
                                on_delete=models.CASCADE,
-                               related_name='carts')
+                               related_name='cart')
     recipe = models.ForeignKey(Recipes,
-                               related_name='carts',
+                               related_name='cart',
                                verbose_name='Recipe',
                                on_delete=models.CASCADE)
 
