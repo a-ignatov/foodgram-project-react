@@ -114,9 +114,6 @@ class Recipes(models.Model):
         verbose_name_plural = 'Recipes'
 
 
-
-
-
 class IngredientInRecipe(models.Model):
     recipe = models.ForeignKey(
         to=Recipes,
