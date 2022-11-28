@@ -1,9 +1,9 @@
-from api.serializers import RecipeSmallSerializer
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 
 from users.models import Subscription, User
 from foodgram.settings import MAX_USERNAME_LENGTH, BANNED_USERNAMES
+from api.serializers import RecipeSmallSerializer
 
 
 class UserShowSerializer(serializers.ModelSerializer):
