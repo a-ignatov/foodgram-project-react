@@ -75,7 +75,6 @@ class Recipes(models.Model):
         to=Ingredient,
         verbose_name='Ingredients',
         through='IngredientInRecipe',
-        related_name='recipes',
     )
     tags = models.ManyToManyField(
         Tag,
@@ -151,7 +150,7 @@ class Favorite(models.Model):
         on_delete=models.CASCADE,
     )
     recipe = models.ForeignKey(Recipes,
-                               related_name='favorites',
+                               related_name='favorite',
                                verbose_name='Recipe',
                                on_delete=models.CASCADE)
 
