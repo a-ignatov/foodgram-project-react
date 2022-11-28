@@ -1,12 +1,12 @@
 from django.db import transaction
 from drf_extra_fields.fields import Base64ImageField
+from recipes.models import (Favorite, Ingredient, IngredientInRecipe, Recipes,
+                            Tag)
 from rest_framework import serializers
 from rest_framework.relations import SlugRelatedField
 from rest_framework.validators import UniqueTogetherValidator
 
 from users.models import User
-from recipes.models import (Favorite, Ingredient, IngredientInRecipe, Recipes,
-                            Tag)
 
 
 class FavoriteSerializer(serializers.ModelSerializer):
@@ -26,21 +26,18 @@ class FavoriteSerializer(serializers.ModelSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = User
         fields = ('email', 'id', 'username', 'first_name', 'last_name')
 
 
 class TagsSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Tag
         fields = '__all__'
 
 
 class IngredientsSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Ingredient
         fields = '__all__'
@@ -91,7 +88,6 @@ class RecipesSerializer(serializers.ModelSerializer):
 
 
 class RecipeSmallSerializer(serializers.ModelSerializer):
-
     class Meta:
         fields = ('id', 'name', 'image', 'cooking_time')
         model = Recipes
@@ -114,6 +110,11 @@ class RecipesSerializerCreate(serializers.ModelSerializer):
             raise serializers.ValidationError(
                 'The recipe name cannot be less than 3 characters.')
         name = name[0].upper() + name[1:]
+        is_exist = Recipes.objects.filter(author=self.context['request'].user,
+                                          name=name).exists()
+        if is_exist and self.context['request'].method == 'POST':
+            raise serializers.ValidationError(
+                'The recipe already exists.')
         return name
 
     def validate_text(self, text):
@@ -151,12 +152,10 @@ class RecipesSerializerCreate(serializers.ModelSerializer):
         return data
 
     def create_ingridients(self, ingredients_data, recipe):
-        IngredientInRecipe.objects.bulk_create([
-            IngredientInRecipe(
-                recipe=recipe,
-                ingredient=Ingredient.objects.get(id=ingredient['id']),
-                amount=ingredient['amount']) for ingredient in ingredients_data
-        ])
+        for ingredient in ingredients_data:
+            IngredientInRecipe(recipe=recipe,
+                               ingredient_id=ingredient['id'],
+                               amount=ingredient.get('amount')).save()
 
     @transaction.atomic
     def create(self, validated_data):
@@ -184,7 +183,6 @@ class RecipesSerializerCreate(serializers.ModelSerializer):
 
 
 class ActionsSerializer(serializers.ModelSerializer):
-
     class Meta:
         fields = ('id', 'name', 'image', 'cooking_time')
         model = Recipes
