@@ -115,7 +115,7 @@ class RecipesViewSet(viewsets.ModelViewSet):
     )
     def download_shopping_cart(self, request):
         get_cart = IngredientInRecipe.objects.filter(
-            recipe__cart__author=request.user).values(
+            recipe__carts__author=request.user).values(
                 'ingredient__name',
                 'ingredient__measurement_unit').annotate(Sum('amount'))
         response = HttpResponse(content_type='application/pdf')
