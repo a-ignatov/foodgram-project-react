@@ -1,8 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
-from foodgram.settings import MAX_USERNAME_LENGTH
-
 
 class User(AbstractUser):
     USER = 'user'
@@ -22,13 +20,13 @@ class User(AbstractUser):
 
     first_name = models.TextField(
         'First Name',
-        max_length=MAX_USERNAME_LENGTH,
+        max_length=150,
         blank=True,
     )
 
     last_name = models.TextField(
         'Last Name',
-        max_length=MAX_USERNAME_LENGTH,
+        max_length=150,
         blank=True,
     )
 
