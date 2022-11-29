@@ -2,7 +2,7 @@ from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 
 from users.models import Subscription, User
-from foodgram.settings import MAX_USERNAME_LENGTH, BANNED_USERNAMES
+from foodgram.settings import MAX_USERNAME_LENGTH, BANNED_USERNAMES, MAX_FIRSTNAME_LASTNAME_LENGTH
 from api.serializers import RecipeSmallSerializer
 
 
@@ -10,9 +10,9 @@ class UserShowSerializer(serializers.ModelSerializer):
     email = serializers.EmailField(required=True)
     username = serializers.CharField(max_length=MAX_USERNAME_LENGTH,
                                      required=True)
-    first_name = serializers.CharField(max_length=MAX_USERNAME_LENGTH,
-                                       required=True)
-    last_name = serializers.CharField(max_length=MAX_USERNAME_LENGTH,
+    first_name = serializers.CharField(
+        max_length=MAX_FIRSTNAME_LASTNAME_LENGTH, required=True)
+    last_name = serializers.CharField(max_length=MAX_FIRSTNAME_LASTNAME_LENGTH,
                                       required=True)
     is_subscribed = serializers.SerializerMethodField(read_only=True)
 

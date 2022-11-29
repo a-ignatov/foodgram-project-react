@@ -151,3 +151,5 @@ MAX_USERNAME_LENGTH = 150
 
 BANNED_USERNAMES = ('me', 'admin', 'ADMIN', 'administrator', 'Administrator',
                     'moderator')
+
+MAX_FIRSTNAME_LASTNAME_LENGTH = 150

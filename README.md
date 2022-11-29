@@ -1,3 +1,16 @@
+# Для ревью
+
+- сайт доступен по ссылке http://158.160.14.237/recipes
+- Админка
+```bash
+http://158.160.14.237/admin/login/?next=/admin/
+```
+- Можно залогиниться под qwerty/qwerty
+- Ссылка на гит
+```bash
+https://github.com/a-ignatov/foodgram-project-react
+```
+
 # Технологии проекта
 ![Foodgram workflow](https://github.com/a-ignatov/foodgram-project-react/actions/workflows/main.yml/badge.svg)
 
