@@ -2,7 +2,8 @@ from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 
 from users.models import Subscription, User
-from foodgram.settings import MAX_USERNAME_LENGTH, BANNED_USERNAMES, MAX_FIRSTNAME_LASTNAME_LENGTH
+from foodgram.settings import (MAX_USERNAME_LENGTH, BANNED_USERNAMES,
+                               MAX_FIRSTNAME_LASTNAME_LENGTH)
 from api.serializers import RecipeSmallSerializer
 
 

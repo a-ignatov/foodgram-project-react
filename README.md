@@ -88,14 +88,14 @@ docker pull aignatov2/foodgram_frontend:latest
 
 Для развертывания контейнеров необходимо:
 
-- Создать и сохранить переменные окружения в **.env** файл, образец ниже
+- Создать и сохранить переменные окружения в **.env** файл
 ```bash
-DB_ENGINE=django.db.backends.postgresql
-DB_NAME=db
-POSTGRES_USER=postgres
-POSTGRES_PASSWORD=postgres
-DB_HOST=db
-DB_PORT=5432
+DB_ENGINE
+DB_NAME
+POSTGRES_USER
+POSTGRES_PASSWORD
+DB_HOST
+DB_PORT
 ```
 
 - Запустить docker-compose
