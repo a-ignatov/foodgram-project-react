@@ -139,7 +139,8 @@ class SubShowSerializer(UserShowSerializer):
         )
 
     def get_is_subscribed(self, username):
-        return True
+            user = self.context.get('request').user
+            return Subscription.objects.filter(user=user, author=username.id).exists()
 
     def get_recipes(self, data):
         limit = self.context.get('request').query_params.get('recipes_limit')
