@@ -1,4 +1,3 @@
-
 from django.db import transaction
 from drf_extra_fields.fields import Base64ImageField
 from rest_framework import serializers
@@ -65,7 +64,7 @@ class IngredientWriteSerializer(serializers.ModelSerializer):
 
 
 class RecipesSerializer(serializers.ModelSerializer):
-    author = UserShowSerializer(read_only=True)
+    author = UserSerializer(many=False, read_only=True)
     # author = SubShowSerializer(many=False, read_only=True)
     ingredients = IngredientWriteSerializer(source='ingredientinrecipe_set',
                                             many=True,
