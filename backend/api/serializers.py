@@ -64,7 +64,7 @@ class IngredientWriteSerializer(serializers.ModelSerializer):
 
 
 class RecipesSerializer(serializers.ModelSerializer):
-    #author = UserSerializer(many=False, read_only=True)
+    # author = UserSerializer(many=False, read_only=True)
     author = SubShowSerializer(many=False, read_only=True)
     ingredients = IngredientWriteSerializer(source='ingredientinrecipe_set',
                                             many=True,
