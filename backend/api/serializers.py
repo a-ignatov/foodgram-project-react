@@ -93,13 +93,6 @@ class RecipesSerializer(serializers.ModelSerializer):
         model = Recipes
 
 
-class RecipeSmallSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        fields = ('id', 'name', 'image', 'cooking_time')
-        model = Recipes
-
-
 class RecipesSerializerCreate(serializers.ModelSerializer):
     author = UserSerializer(many=False, read_only=True)
     ingredients = IngredientWriteSerializer(source='ingredientinrecipe_set',

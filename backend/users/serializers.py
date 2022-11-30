@@ -4,7 +4,7 @@ from rest_framework.validators import UniqueValidator
 from users.models import Subscription, User
 from foodgram.settings import (MAX_USERNAME_LENGTH, BANNED_USERNAMES,
                                MAX_FIRSTNAME_LASTNAME_LENGTH)
-from api.serializers import RecipeSmallSerializer
+from recipes.models import Recipes
 
 
 class UserShowSerializer(serializers.ModelSerializer):
@@ -115,6 +115,13 @@ class SignupSerializer(serializers.ModelSerializer):
 class TokenSerializer(serializers.Serializer):
     username = serializers.CharField(max_length=MAX_USERNAME_LENGTH)
     confirmation_code = serializers.CharField(max_length=24)
+
+
+class RecipeSmallSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        fields = ('id', 'name', 'image', 'cooking_time')
+        model = Recipes
 
 
 class SubShowSerializer(UserShowSerializer):
