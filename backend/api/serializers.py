@@ -4,8 +4,8 @@ from rest_framework import serializers
 from rest_framework.relations import SlugRelatedField
 from rest_framework.validators import UniqueTogetherValidator
 
-from users.models import User  # , Subscription
-# from users.serializers import SubShowSerializer
+from users.models import User
+from users.serializers import UserShowSerializer
 from recipes.models import (Favorite, Ingredient, IngredientInRecipe, Recipes,
                             Tag)
 
@@ -64,7 +64,7 @@ class IngredientWriteSerializer(serializers.ModelSerializer):
 
 
 class RecipesSerializer(serializers.ModelSerializer):
-    author = UserSerializer(many=False, read_only=True)
+    author = UserShowSerializer(read_only=True)
     # author = SubShowSerializer(many=False, read_only=True)
     ingredients = IngredientWriteSerializer(source='ingredientinrecipe_set',
                                             many=True,
@@ -74,14 +74,6 @@ class RecipesSerializer(serializers.ModelSerializer):
         read_only=True, method_name='get_is_favorited')
     is_in_shopping_cart = serializers.SerializerMethodField(
         read_only=True, method_name='get_is_in_shopping_cart')
-    is_subscribed = serializers.SerializerMethodField(
-        read_only=True, method_name='get_is_subscribed')
-
-    def get_is_subscribed(self, recipe):
-        return True
-        # user = self.context["request"].user
-        # return (not user.is_anonymous and Subscription.objects.filter(
-        #    user=user, following=recipe.author).exists())
 
     def get_is_favorited(self, recipe):
         user = self.context['request'].user
@@ -95,7 +87,7 @@ class RecipesSerializer(serializers.ModelSerializer):
 
     class Meta:
         fields = ('is_favorited', 'is_in_shopping_cart',
-                  'is_subscribed', 'id', 'tags',
+                  'id', 'tags',
                   'author', 'ingredients', 'name', 'image', 'text',
                   'cooking_time')
         model = Recipes
