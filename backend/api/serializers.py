@@ -5,7 +5,7 @@ from rest_framework.relations import SlugRelatedField
 from rest_framework.validators import UniqueTogetherValidator
 
 from users.models import User
-# from users.serializers import UserShowSerializer
+from users.serializers import UserShowSerializer
 from recipes.models import (Favorite, Ingredient, IngredientInRecipe, Recipes,
                             Tag)
 
@@ -64,8 +64,8 @@ class IngredientWriteSerializer(serializers.ModelSerializer):
 
 
 class RecipesSerializer(serializers.ModelSerializer):
-    author = UserSerializer(many=False, read_only=True)
-    # author = SubShowSerializer(many=False, read_only=True)
+    # author = UserSerializer(many=False, read_only=True)
+    author = UserShowSerializer(many=False, read_only=True)
     ingredients = IngredientWriteSerializer(source='ingredientinrecipe_set',
                                             many=True,
                                             read_only=True)
