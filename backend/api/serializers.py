@@ -5,7 +5,7 @@ from rest_framework.relations import SlugRelatedField
 from rest_framework.validators import UniqueTogetherValidator
 
 from users.models import User
-from users.serializers import UserShowSerializer
+# from users.serializers import UserShowSerializer
 from recipes.models import (Favorite, Ingredient, IngredientInRecipe, Recipes,
                             Tag)
 
