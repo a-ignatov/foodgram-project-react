@@ -48,7 +48,8 @@ const SingleCard = ({ loadItem, updateOrders }) => {
     ingredients,
     text,
     is_favorited,
-    is_in_shopping_cart
+    is_in_shopping_cart,
+    is_subscribed
   } = recipe
   
   return <Main>
@@ -105,10 +106,10 @@ const SingleCard = ({ loadItem, updateOrders }) => {
               className={styles['single-card__button']}
               modifier='style_light-blue'
               clickHandler={_ => {
-                handleSubscribe({ author_id: author.id, toSubscribe: !author.is_subscribed })
+                handleSubscribe({ author_id: author.id, toSubscribe: !is_subscribed })
               }}
             >
-              {author.is_subscribed ? 'Отписаться от автора' : 'Подписаться на автора'}
+              {is_subscribed ? 'Отписаться от автора' : 'Подписаться на автора'}
             </Button>}
           </div>
           <Ingredients ingredients={ingredients} />
