@@ -133,8 +133,6 @@ class SubShowSerializer(UserShowSerializer):
     is_subscribed = serializers.SerializerMethodField()
     recipes = serializers.SerializerMethodField()
     recipes_count = serializers.SerializerMethodField()
-    # recipes_count = serializers.SerializerMethodField(
-    #    method_name='get_recipes_count')
 
     class Meta:
         model = User
