@@ -132,7 +132,7 @@ class SubShowSerializer(UserShowSerializer):
     last_name = serializers.ReadOnlyField(source='following.last_name')
     is_subscribed = serializers.SerializerMethodField()
     recipes = serializers.SerializerMethodField()
-    recipes_count = serializers.SerializerMethodField()
+    # recipes_count = serializers.SerializerMethodField()
 
     class Meta:
         model = User
@@ -144,7 +144,7 @@ class SubShowSerializer(UserShowSerializer):
             'last_name',
             'is_subscribed',
             'recipes',
-            'recipes_count',
+            # 'recipes_count',
         )
 
     def get_is_subscribed(self, username):
