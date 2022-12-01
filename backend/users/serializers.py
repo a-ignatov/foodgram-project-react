@@ -132,10 +132,9 @@ class SubShowSerializer(UserShowSerializer):
     last_name = serializers.ReadOnlyField(source='following.last_name')
     is_subscribed = serializers.SerializerMethodField()
     recipes = serializers.SerializerMethodField()
-    # recipes_count = serializers.SerializerMethodField()
-    recipes_count = serializers.SerializerMethodField(
-        method_name='get_recipes_count'
-    )
+    recipes_count = serializers.SerializerMethodField(read_only=True)
+    # recipes_count = serializers.SerializerMethodField(
+    #    method_name='get_recipes_count')
 
     class Meta:
         model = User
@@ -160,5 +159,6 @@ class SubShowSerializer(UserShowSerializer):
         recipes = data.following.recipes.all()[:int(limit)]
         return RecipeSmallSerializer(recipes, many=True).data
 
-    def get_recipes_count(self, data):
-        return data.author.recipes.count()
+    @staticmethod
+    def get_recipes_count(data):
+        return data.recipes.count()
