@@ -128,13 +128,3 @@ docker-compose exec backend python manage.py createsuperuser
 - [DEL] /api/users/{id}/subscribe/ - Отписаться от пользователя.
 - [GET] /api/ingredients/ - Список ингредиентов с возможностью поиска по имени.
 
-  send_message_telegram:
-    runs-on: ubuntu-latest
-    needs: deploy
-    steps:
-      - name: send message
-        uses: appleboy/telegram-action@master
-        with:
-          to: ${{ secrets.TELEGRAM_TO }}
-          token: ${{ secrets.TELEGRAM_TOKEN }}
-          message: ${{ github.workflow }} успешно выполнен!
