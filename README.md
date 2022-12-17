@@ -1,16 +1,3 @@
-# Для ревью
-
-- сайт доступен по ссылке http://158.160.14.237/recipes
-- Админка
-```bash
-http://158.160.14.237/admin/login/?next=/admin/
-```
-- Можно залогиниться под qwerty/qwerty
-- Ссылка на гит
-```bash
-https://github.com/a-ignatov/foodgram-project-react
-```
-
 # Технологии проекта
 ![Foodgram workflow](https://github.com/a-ignatov/foodgram-project-react/actions/workflows/main.yml/badge.svg)
 
@@ -141,3 +128,14 @@ docker-compose exec backend python manage.py createsuperuser
 - [POST] /api/recipes/{id}/favorite/ - Добавить рецепт в избранное.
 - [DEL] /api/users/{id}/subscribe/ - Отписаться от пользователя.
 - [GET] /api/ingredients/ - Список ингредиентов с возможностью поиска по имени.
+
+  send_message_telegram:
+    runs-on: ubuntu-latest
+    needs: deploy
+    steps:
+      - name: send message
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          message: ${{ github.workflow }} успешно выполнен!
