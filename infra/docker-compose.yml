@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   db:
-    image: postgres:13.0-alpine
+    image: postgres:14.6-alpine
     volumes:
       - db_data:/var/lib/postgresql/data/
     env_file:
@@ -41,4 +41,3 @@ volumes:
   db_data:
   static_value:
   media_value:
-  redoc:
